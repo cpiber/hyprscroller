@@ -144,7 +144,7 @@ public:
     ScrollerSizes() {}
     ~ScrollerSizes() { reset(); }
 
-    Mode get_mode(CMonitor *monitor) {
+    Mode get_mode(PHLMONITOR monitor) {
         update_sizes(monitor);
         const auto monitor_data = monitors.find(monitor->szName);
         if (monitor_data != monitors.end()) {
@@ -180,7 +180,7 @@ public:
     }
 
 private:
-    void update_sizes(CMonitor *monitor) {
+    void update_sizes(PHLMONITOR monitor) {
         MonitorData monitor_data;
         monitor_data.mode = Mode::Row;
         monitor_data.window_default_height = updatate_window_default_height();
@@ -771,7 +771,7 @@ public:
     }
     bool move_focus_up(bool focus_wrap) {
         if (active == windows.first()) {
-            CMonitor *monitor = g_pCompositor->getMonitorInDirection('u');
+            PHLMONITOR monitor = g_pCompositor->getMonitorInDirection('u');
             if (monitor == nullptr) {
                 if (focus_wrap)
                     active = windows.last();
@@ -787,7 +787,7 @@ public:
     }
     bool move_focus_down(bool focus_wrap) {
         if (active == windows.last()) {
-            CMonitor *monitor = g_pCompositor->getMonitorInDirection('d');
+            PHLMONITOR monitor = g_pCompositor->getMonitorInDirection('d');
             if (monitor == nullptr) {
                 if (focus_wrap)
                     active = windows.first();
@@ -1212,7 +1212,7 @@ public:
 private:
     bool move_focus_left(bool focus_wrap) {
         if (active == columns.first()) {
-            CMonitor *monitor = g_pCompositor->getMonitorInDirection('l');
+            PHLMONITOR monitor = g_pCompositor->getMonitorInDirection('l');
             if (monitor == nullptr) {
                 if (focus_wrap)
                     active = columns.last();
@@ -1227,7 +1227,7 @@ private:
     }
     bool move_focus_right(bool focus_wrap) {
         if (active == columns.last()) {
-            CMonitor *monitor = g_pCompositor->getMonitorInDirection('r');
+            PHLMONITOR monitor = g_pCompositor->getMonitorInDirection('r');
             if (monitor == nullptr) {
                 if (focus_wrap)
                     active = columns.first();
@@ -1493,7 +1493,7 @@ public:
         }
     }
     // Returns the old viewport
-    Box update_sizes(CMonitor *monitor) {
+    Box update_sizes(PHLMONITOR monitor) {
         // for gaps outer
         static auto PGAPSINDATA = CConfigValue<Hyprlang::CUSTOMTYPE>("general:gaps_in");
         static auto PGAPSOUTDATA = CConfigValue<Hyprlang::CUSTOMTYPE>("general:gaps_out");
