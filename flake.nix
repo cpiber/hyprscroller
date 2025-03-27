@@ -64,7 +64,7 @@
             src =
               if (commitPins ? ${hyprland.rev}) && (self ? rev) then
                 (builtins.fetchGit {
-                  url = "https://github.com/maotseantonio/hyprscroller";
+                  url = "https://github.com/maotseantonio/hyprscroller-flake";
                   rev = selfRev;
                 })
               else
@@ -88,7 +88,7 @@
             '';
 
             meta = with lib; {
-              homepage = "https://github.com/maotseantonio/hyprscroller";
+              homepage = "https://github.com/maotseantonio/hyprscroller-flake";
               description = "Hyprland layout plugin providing a scrolling layout like PaperWM";
               license = licenses.mit;
               platforms = platforms.linux;
