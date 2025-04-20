@@ -223,6 +223,9 @@ namespace dispatchers {
         } else if (arg == "c" || arg == "col" || arg == "column") {
             mode = Mode::Column;
         }
+        else if (arg == "t" || arg == "toggle"){
+            mode = Mode::Toggle;
+        }
         g_ScrollerLayout->set_mode(workspace, mode);
 
         return {};

@@ -428,7 +428,13 @@ void Row::resize_active_window(const Vector2D &delta)
 
 void Row::set_mode(Mode m, bool silent)
 {
-    mode = m;
+    if (m == Mode::Toggle){
+        if (mode == Mode::Row)
+            mode = Mode::Column;
+        else if (mode == Mode::Column)
+            mode = Mode::Row;
+    } else
+        mode = m;
     if (!silent) {
         post_event("mode");
     }
