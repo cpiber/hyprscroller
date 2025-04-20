@@ -893,16 +893,36 @@ void ScrollerLayout::move_focus(WORKSPACEID workspace, Direction direction)
         // is "move to another monitor" (pass the direction)
         switch (direction) {
             case Direction::Left:
-                orig_moveFocusTo("l");
+                // if (g_pCompositor->getMonitorInDirection('l') == nullptr){
+                //     g_pKeybindManager->m_mDispatchers["workspace"]("m-1");
+                // }
+                // else{
+                    orig_moveFocusTo("l");
+                // }
                 break;
             case Direction::Right:
-                orig_moveFocusTo("r");
+                // if (g_pCompositor->getMonitorInDirection('r') == nullptr){
+                //     g_pKeybindManager->m_mDispatchers["workspace"]("m+1");
+                // }
+                // else{
+                    orig_moveFocusTo("r");
+                // }
                 break;
             case Direction::Up:
-                orig_moveFocusTo("u");
+                if (g_pCompositor->getMonitorInDirection('u') == nullptr){
+                    g_pKeybindManager->m_mDispatchers["workspace"]("m-1");
+                }
+                else{
+                    orig_moveFocusTo("u");
+                }
                 break;
             case Direction::Down:
-                orig_moveFocusTo("d");
+                if (g_pCompositor->getMonitorInDirection('d') == nullptr){
+                    g_pKeybindManager->m_mDispatchers["workspace"]("m+1");
+                }
+                else{
+                    orig_moveFocusTo("d");
+                }
                 break;
             default:
                 break;

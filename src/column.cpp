@@ -298,9 +298,14 @@ bool Column::move_focus_up(bool focus_wrap)
     if (active == windows.first()) {
         PHLMONITOR monitor = g_pCompositor->getMonitorInDirection('u');
         if (monitor == nullptr) {
-            if (focus_wrap)
+            if (focus_wrap){
                 active = windows.last();
-            return true;
+                return true;
+            }
+            else{
+                g_pKeybindManager->m_mDispatchers["workspace"]("m-1");
+                return false;
+            }
         }
         // use default dispatch for movefocus (change monitor)
         orig_moveFocusTo("u");
@@ -316,9 +321,14 @@ bool Column::move_focus_down(bool focus_wrap)
     if (active == windows.last()) {
         PHLMONITOR monitor = g_pCompositor->getMonitorInDirection('d');
         if (monitor == nullptr) {
-            if (focus_wrap)
+            if (focus_wrap){
                 active = windows.first();
-            return true;
+                return true;
+            }
+            else{
+                g_pKeybindManager->m_mDispatchers["workspace"]("m+1");
+                return false;
+            }
         }
         // use default dispatch for movefocus (change monitor)
         orig_moveFocusTo("d");
