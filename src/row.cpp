@@ -1,4 +1,5 @@
 #include <hyprland/src/config/ConfigValue.hpp>
+#include <hyprland/src/config/ConfigManager.hpp>
 #include <hyprland/src/managers/EventManager.hpp>
 #include <hyprland/src/plugins/PluginAPI.hpp>
 #include <hyprland/src/render/Renderer.hpp>
@@ -19,7 +20,7 @@ Row::Row(WORKSPACEID workspace)
       reorder(Reorder::Auto), pinned(nullptr), active(nullptr)
 {
     post_event("overview");
-    const auto PMONITOR = g_pCompositor->m_pLastMonitor.lock();
+    const auto PMONITOR = g_pCompositor->m_lastMonitor.lock();
     set_mode(scroller_sizes.get_mode(PMONITOR));
     update_sizes(PMONITOR);
 }
@@ -106,9 +107,9 @@ void Row::add_active_window(PHLWINDOW window)
 
     // Evaluate window rules
     auto store_modifier = modifier;
-    for (auto &r: window->m_vMatchedRules) {
-        if (r->szRule.starts_with("plugin:scroller:modemodifier")) {
-            const auto modemodifier = r->szRule.substr(r->szRule.find_first_of(' ') + 1);
+    for (auto &r: window->m_matchedRules) {
+        if (r->m_rule.starts_with("plugin:scroller:modemodifier")) {
+            const auto modemodifier = r->m_rule.substr(r->m_rule.find_first_of(' ') + 1);
             // params: row|column after|before|end|beginning focus|nofocus
             std::istringstream iss(modemodifier);
             std::string arg;
@@ -164,7 +165,7 @@ void Row::add_active_window(PHLWINDOW window)
             active = node;
         else {
             active = store_active;
-            window->m_bNoInitialFocus = true;
+            window->m_noInitialFocus = true;
         }
 
         reorder = Reorder::Auto;
@@ -356,7 +357,7 @@ void Row::resize_active_column(int step)
             static auto* const *CYCLESIZE_CLOSEST = (Hyprlang::INT* const *)HyprlandAPI::getConfigValue(PHANDLE, "plugin:scroller:cyclesize_closest")->getDataStaticPtr();
             if (**CYCLESIZE_CLOSEST) {
                 double fraction = active->data()->get_geom_w() / max.w;
-                width = scroller_sizes.get_column_closest_width(g_pCompositor->m_pLastMonitor, fraction, step);
+                width = scroller_sizes.get_column_closest_width(g_pCompositor->m_lastMonitor, fraction, step);
             } else {
                 width = scroller_sizes.get_column_default_width(get_active_window());
             }
@@ -984,18 +985,18 @@ bool Row::update_sizes(PHLMONITOR monitor)
     auto *const PGAPSOUT = (CCssGapData *)(PGAPSOUTDATA.ptr())->getData();
     const auto WORKSPACERULE = g_pConfigManager->getWorkspaceRuleFor(g_pCompositor->getWorkspaceByID(workspace));
     // For now, support only constant CCssGapData
-    auto gaps_in = WORKSPACERULE.gapsIn.value_or(*PGAPSIN).top;
+    auto gaps_in = WORKSPACERULE.gapsIn.value_or(*PGAPSIN).m_top;
     auto gaps_out = WORKSPACERULE.gapsOut.value_or(*PGAPSOUT);
-    const auto SIZE = monitor->vecSize;
-    const auto POS = monitor->vecPosition;
-    const auto TOPLEFT = monitor->vecReservedTopLeft;
-    const auto BOTTOMRIGHT = monitor->vecReservedBottomRight;
+    const auto SIZE = monitor->m_size;
+    const auto POS = monitor->m_position;
+    const auto TOPLEFT = monitor->m_reservedTopLeft;
+    const auto BOTTOMRIGHT = monitor->m_reservedBottomRight;
 
     full = Box(POS, SIZE);
-    const Box newmax = Box(POS.x + TOPLEFT.x + gaps_out.left,
-                           POS.y + TOPLEFT.y + gaps_out.top,
-                           SIZE.x - TOPLEFT.x - BOTTOMRIGHT.x - gaps_out.left - gaps_out.right,
-                           SIZE.y - TOPLEFT.y - BOTTOMRIGHT.y - gaps_out.top - gaps_out.bottom);
+    const Box newmax = Box(POS.x + TOPLEFT.x + gaps_out.m_left,
+                           POS.y + TOPLEFT.y + gaps_out.m_top,
+                           SIZE.x - TOPLEFT.x - BOTTOMRIGHT.x - gaps_out.m_left - gaps_out.m_right,
+                           SIZE.y - TOPLEFT.y - BOTTOMRIGHT.y - gaps_out.m_top - gaps_out.m_bottom);
     bool changed = gap != gaps_in;
     gap = gaps_in;
 
@@ -1188,11 +1189,11 @@ void Row::toggle_overview()
             }
             adjust_overview_columns();
 
-            PHLMONITOR monitor = window->m_pWorkspace->m_pMonitor.lock();
+            PHLMONITOR monitor = window->m_workspace->m_monitor.lock();
             g_pHyprRenderer->damageMonitor(monitor);
 
             overviews->set_scale(workspace, scale);
-            overviews->set_vecsize(workspace, monitor->vecSize);
+            overviews->set_vecsize(workspace, monitor->m_size);
             // Update cursor
             get_active_window()->warpCursor();
         } else {
@@ -1210,7 +1211,7 @@ void Row::toggle_overview()
         }
     } else {
         if (**overview_scale_content && overviews->is_initialized()) {
-            PHLMONITOR monitor = get_active_window()->m_pWorkspace->m_pMonitor.lock();
+            PHLMONITOR monitor = get_active_window()->m_workspace->m_monitor.lock();
             overviews->disable(workspace);
             g_pHyprRenderer->damageMonitor(monitor);
         }
@@ -1559,7 +1560,7 @@ void Row::scroll_update(Direction dir, const Vector2D &delta) {
         break;
     }
 
-    auto monitor = g_pCompositor->getWorkspaceByID(workspace)->m_pMonitor;
+    auto monitor = g_pCompositor->getWorkspaceByID(workspace)->m_monitor;
     g_pHyprRenderer->damageMonitor(monitor.lock());
 }
 

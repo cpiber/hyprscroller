@@ -21,7 +21,7 @@ SDispatchResult this_moveActiveTo(std::string args)
 
 eFullscreenMode window_fullscreen_state(PHLWINDOW window)
 {
-    return window->m_sFullscreenState.internal;
+    return window->m_fullscreenState.internal;
 }
 
 void toggle_window_fullscreen_internal(PHLWINDOW window, eFullscreenMode mode)
@@ -36,10 +36,10 @@ void toggle_window_fullscreen_internal(PHLWINDOW window, eFullscreenMode mode)
 WORKSPACEID get_workspace_id()
 {
     WORKSPACEID workspace_id;
-    if (g_pCompositor->m_pLastMonitor->activeSpecialWorkspaceID()) {
-        workspace_id = g_pCompositor->m_pLastMonitor->activeSpecialWorkspaceID();
+    if (g_pCompositor->m_lastMonitor->activeSpecialWorkspaceID()) {
+        workspace_id = g_pCompositor->m_lastMonitor->activeSpecialWorkspaceID();
     } else {
-        workspace_id = g_pCompositor->m_pLastMonitor->activeWorkspaceID();
+        workspace_id = g_pCompositor->m_lastMonitor->activeWorkspaceID();
     }
     if (workspace_id == WORKSPACE_INVALID)
         return -1;
@@ -52,7 +52,7 @@ WORKSPACEID get_workspace_id()
 void update_relative_cursor_coords(PHLWINDOW window)
 {
     if (window != nullptr)
-        window->m_vRelativeCursorCoordsOnLastWarp = g_pInputManager->getMouseCoordsInternal() - window->m_vPosition;
+        window->m_relativeCursorCoordsOnLastWarp = g_pInputManager->getMouseCoordsInternal() - window->m_position;
 }
 
 void force_focus_to_window(PHLWINDOW window)
@@ -61,9 +61,9 @@ void force_focus_to_window(PHLWINDOW window)
     g_pCompositor->focusWindow(window);
     window->warpCursor();
 
-    g_pInputManager->m_pForcedFocus = window;
+    g_pInputManager->m_forcedFocus = window;
     g_pInputManager->simulateMouseMovement();
-    g_pInputManager->m_pForcedFocus.reset();
+    g_pInputManager->m_forcedFocus.reset();
 }
 
 void switch_to_window(PHLWINDOW from, PHLWINDOW to)
@@ -75,8 +75,8 @@ void switch_to_window(PHLWINDOW from, PHLWINDOW to)
     auto twid = to->workspaceID();
     bool change_workspace = fwid != twid;
     if (from != to) {
-        const PHLWORKSPACE workspace = to->m_pWorkspace;
-        eFullscreenMode mode = workspace->m_efFullscreenMode;
+        const PHLWORKSPACE workspace = to->m_workspace;
+        eFullscreenMode mode = workspace->m_fullscreenMode;
         if (mode != eFullscreenMode::FSMODE_NONE) {
             if (change_workspace) {
                 auto fwindow = workspace->getLastFocusedWindow(); 
@@ -87,7 +87,7 @@ void switch_to_window(PHLWINDOW from, PHLWINDOW to)
         }
         if (change_workspace) {
             // This is to override overview trying to stay in an overview workspace
-            g_pCompositor->m_pLastMonitor = to->m_pMonitor;
+            g_pCompositor->m_lastMonitor = to->m_monitor;
         }
         force_focus_to_window(to);
         if (mode != eFullscreenMode::FSMODE_NONE) {

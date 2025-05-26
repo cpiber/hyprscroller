@@ -109,7 +109,7 @@ void Column::add_active_window(PHLWINDOW window)
     if (focus == ModeModifier::FOCUS_FOCUS)
         active = node;
     else
-        window->m_bNoInitialFocus = true;
+        window->m_noInitialFocus = true;
 }
 
 void Column::remove_window(PHLWINDOW window)
@@ -520,7 +520,7 @@ void Column::cycle_size_active_window(int step, const Vector2D &gap_x, double ga
         static auto* const *CYCLESIZE_CLOSEST = (Hyprlang::INT* const *)HyprlandAPI::getConfigValue(PHANDLE, "plugin:scroller:cyclesize_closest")->getDataStaticPtr();
         if (**CYCLESIZE_CLOSEST) {
             double fraction = active->data()->get_geom_h() / row->get_max().h;
-            height = scroller_sizes.get_window_closest_height(g_pCompositor->m_pLastMonitor, fraction, step);
+            height = scroller_sizes.get_window_closest_height(g_pCompositor->m_lastMonitor, fraction, step);
         } else {
             height = scroller_sizes.get_window_default_height(active->data()->get_window());
         }

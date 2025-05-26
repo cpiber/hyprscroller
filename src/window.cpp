@@ -9,7 +9,7 @@ extern ScrollerSizes scroller_sizes;
 Window::Window(PHLWINDOW window, double maxy, double box_h, StandardSize width) : window(window), selected(false), width(width)
 {
     StandardSize h = scroller_sizes.get_window_default_height(window);
-    window->m_vPosition.y = maxy;
+    window->m_position.y = maxy;
     update_height(h, box_h);
     auto deco = makeUnique<SelectionBorders>(this);
     decoration = deco.get();
@@ -65,6 +65,6 @@ CGradientValueData Window::get_border_color() const
 {
     static auto *const *SELECTEDCOL = (Hyprlang::INT *const *)HyprlandAPI::getConfigValue(PHANDLE, "plugin:scroller:col.selection_border")->getDataStaticPtr();
     static CHyprColor selected_col = **SELECTEDCOL;
-    return selected ? selected_col : window->m_cRealBorderColor;
+    return selected ? selected_col : window->m_realBorderColor;
 }
 

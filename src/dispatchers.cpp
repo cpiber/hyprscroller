@@ -43,10 +43,10 @@ namespace dispatchers {
             return -1;
 
         int workspace_id;
-        if (g_pCompositor->m_pLastMonitor->activeSpecialWorkspaceID()) {
-            workspace_id = g_pCompositor->m_pLastMonitor->activeSpecialWorkspaceID();
+        if (g_pCompositor->m_lastMonitor->activeSpecialWorkspaceID()) {
+            workspace_id = g_pCompositor->m_lastMonitor->activeSpecialWorkspaceID();
         } else {
-            workspace_id = g_pCompositor->m_pLastMonitor->activeWorkspaceID();
+            workspace_id = g_pCompositor->m_lastMonitor->activeWorkspaceID();
         }
         if (workspace_id == WORKSPACE_INVALID)
             return -1;
