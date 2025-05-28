@@ -392,8 +392,13 @@ void ScrollerLayout::onWindowRemovedTiling(PHLWINDOW window)
 /*
     Called when a floating window is removed (unmapped)
 */
-void ScrollerLayout::onWindowRemovedFloating(PHLWINDOW)
+void ScrollerLayout::onWindowRemovedFloating(PHLWINDOW window)
 {
+    if (window && window->m_isX11) {
+        // Avoid automatic focus switch when an XWayland floating window is removed,
+        // to prevent input method losing focus
+        return;
+    }
     WORKSPACEID workspace_id = g_pCompositor->m_lastMonitor->activeSpecialWorkspaceID();
     if (!workspace_id) {
         workspace_id = g_pCompositor->m_lastMonitor->activeWorkspaceID();
