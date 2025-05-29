@@ -394,7 +394,8 @@ void ScrollerLayout::onWindowRemovedTiling(PHLWINDOW window)
 */
 void ScrollerLayout::onWindowRemovedFloating(PHLWINDOW window)
 {
-    if (window && window->m_isX11) {
+    static auto* const *avoid_focus = (Hyprlang::INT* const*)HyprlandAPI::getConfigValue(PHANDLE, "plugin:scroller:avoid_focus_on_xwayland_float_close")->getDataStaticPtr();
+    if (window && window->m_isX11 && **avoid_focus) {
         // Avoid automatic focus switch when an XWayland floating window is removed,
         // to prevent input method losing focus
         return;

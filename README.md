@@ -925,6 +925,19 @@ event won't be triggered until your next mouse movement. The easiest way to
 scroll is to flick the mouse inside and outside of the gap to make sure you
 only scroll once.
 
+### `avoid_focus_on_xwayland_float_close`
+
+Some input methods (IMEs) on XWayland create temporary floating windows
+like candidate popups while typing. These windows may be quickly removed.
+
+When such a window closes, hyprscroller may change focus to another window.
+For XWayland floating windows, this can cause input methods to lose focus.
+
+This setting disables focus changes only when an XWayland floating window
+is removed. Other windows are unaffected.
+
+Default is `0` (off). Enable it if you face input focus problems with XWayland:
+
 ### `cyclesize_wrap`
 
 If `true`, `cyclesize`, `cyclewidth` and `cycleheight` will cycle through all
