@@ -1512,7 +1512,29 @@ void ScrollerLayout::swipe_end(SCallbackInfo &info,
     // Only if scrolling
     if (swipe_direction != Direction::Begin) {
         auto s = getRowForWorkspace(wid);
-        s->scroll_end(swipe_direction);
+        if (s) {
+            auto from = s->get_active_window();
+            s->scroll_end(swipe_direction);
+            auto to = s->get_active_window();
+
+            if (from == to) {
+                // scroll hit an edge and couldn't move
+                static auto* const *movefocus_changes_workspace = (Hyprlang::INT* const *)HyprlandAPI::getConfigValue(PHANDLE, "plugin:scroller:movefocus_changes_workspace")->getDataStaticPtr();
+                if (**movefocus_changes_workspace) {
+                    if (swipe_direction == Direction::Up) { // Swipe down gesture
+                        PHLMONITOR monitor = g_pCompositor->getMonitorInDirection('d');
+                        if (monitor == nullptr) {
+                            g_pKeybindManager->m_dispatchers["workspace"]("m+1");
+                        }
+                    } else if (swipe_direction == Direction::Down) { // Swipe up gesture
+                        PHLMONITOR monitor = g_pCompositor->getMonitorInDirection('u');
+                        if (monitor == nullptr) {
+                            g_pKeybindManager->m_dispatchers["workspace"]("m-1");
+                        }
+                    }
+                }
+            }
+        }
     }
 
     swipe_active = false;
