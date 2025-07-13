@@ -293,14 +293,10 @@ bool Row::move_focus_left(bool focus_wrap)
     if (active == columns.first()) {
         PHLMONITOR monitor = g_pCompositor->getMonitorInDirection('l');
         if (monitor == nullptr) {
-            if (focus_wrap){
+            if (focus_wrap) {
                 active = columns.last();
                 return true;
             }
-            // else{
-            //     g_pKeybindManager->m_dispatchers["workspace"]("m-1");
-            //     return false;
-            // }
         }
 
         orig_moveFocusTo("l");
@@ -315,14 +311,10 @@ bool Row::move_focus_right(bool focus_wrap)
     if (active == columns.last()) {
         PHLMONITOR monitor = g_pCompositor->getMonitorInDirection('r');
         if (monitor == nullptr) {
-            if (focus_wrap){
+            if (focus_wrap) {
                 active = columns.first();
                 return true;
             }
-            // else{
-            //     g_pKeybindManager->m_dispatchers["workspace"]("m-1");
-            //     return false;
-            // }
         }
 
         orig_moveFocusTo("r");
