@@ -93,7 +93,7 @@ void SelectionBorders::draw(PHLMONITOR pMonitor, float const& a) {
         data.lerp     = m_pWindow->m_borderFadeAnimationProgress->value();
     }
 
-    g_pHyprRenderer->m_renderPass.add(makeUnique<CBorderPassElement>(data));
+    g_pHyprRenderer->m_renderPass.add(makeShared<CBorderPassElement>(data));
 }
 
 eDecorationType SelectionBorders::getDecorationType() {
@@ -233,7 +233,7 @@ void JumpDecoration::draw(PHLMONITOR pMonitor, float const& a) {
     CTexPassElement::SRenderData data;
     data.tex = m_pTexture;
     data.box = windowBox;
-    g_pHyprRenderer->m_renderPass.add(makeUnique<CTexPassElement>(data));
+    g_pHyprRenderer->m_renderPass.add(makeShared<CTexPassElement>(data));
 }
 
 eDecorationType JumpDecoration::getDecorationType() {

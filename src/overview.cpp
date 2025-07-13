@@ -76,10 +76,10 @@ static void hookRenderLayer(void *thisptr, PHLLS layer, PHLMONITOR monitor, cons
         SRenderModifData modif_data;
         modif_data.modifs.push_back({SRenderModifData::eRenderModifType::RMOD_TYPE_SCALE, data.scale_i});
         modif_data.enabled = true;
-        g_pHyprRenderer->m_renderPass.add(makeUnique<OverviewPassElement>(OverviewPassElement::OverviewModifData(modif_data)));
+        g_pHyprRenderer->m_renderPass.add(makeShared<OverviewPassElement>(OverviewPassElement::OverviewModifData(modif_data)));
         g_pHyprRenderer->damageMonitor(monitor);
         ((origRenderLayer)(g_pRenderLayerHook->m_original))(thisptr, layer, monitor, time, popups, lockscreen);
-        g_pHyprRenderer->m_renderPass.add(makeUnique<OverviewPassElement>(OverviewPassElement::OverviewModifData(SRenderModifData())));
+        g_pHyprRenderer->m_renderPass.add(makeShared<OverviewPassElement>(OverviewPassElement::OverviewModifData(SRenderModifData())));
         monitor->m_size = monitor_size;
         return;
     }
