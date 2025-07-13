@@ -894,7 +894,7 @@ void ScrollerLayout::move_focus(WORKSPACEID workspace, Direction direction)
         switch (direction) {
             case Direction::Left:
                 // if (g_pCompositor->getMonitorInDirection('l') == nullptr){
-                //     g_pKeybindManager->m_mDispatchers["workspace"]("m-1");
+                //     g_pKeybindManager->m_dispatchers["workspace"]("m-1");
                 // }
                 // else{
                     orig_moveFocusTo("l");
@@ -902,7 +902,7 @@ void ScrollerLayout::move_focus(WORKSPACEID workspace, Direction direction)
                 break;
             case Direction::Right:
                 // if (g_pCompositor->getMonitorInDirection('r') == nullptr){
-                //     g_pKeybindManager->m_mDispatchers["workspace"]("m+1");
+                //     g_pKeybindManager->m_dispatchers["workspace"]("m+1");
                 // }
                 // else{
                     orig_moveFocusTo("r");
@@ -910,7 +910,7 @@ void ScrollerLayout::move_focus(WORKSPACEID workspace, Direction direction)
                 break;
             case Direction::Up:
                 if (g_pCompositor->getMonitorInDirection('u') == nullptr){
-                    g_pKeybindManager->m_mDispatchers["workspace"]("m-1");
+                    g_pKeybindManager->m_dispatchers["workspace"]("m-1");
                 }
                 else{
                     orig_moveFocusTo("u");
@@ -918,7 +918,7 @@ void ScrollerLayout::move_focus(WORKSPACEID workspace, Direction direction)
                 break;
             case Direction::Down:
                 if (g_pCompositor->getMonitorInDirection('d') == nullptr){
-                    g_pKeybindManager->m_mDispatchers["workspace"]("m+1");
+                    g_pKeybindManager->m_dispatchers["workspace"]("m+1");
                 }
                 else{
                     orig_moveFocusTo("d");

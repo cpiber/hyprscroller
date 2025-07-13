@@ -298,7 +298,7 @@ bool Row::move_focus_left(bool focus_wrap)
                 return true;
             }
             // else{
-            //     g_pKeybindManager->m_mDispatchers["workspace"]("m-1");
+            //     g_pKeybindManager->m_dispatchers["workspace"]("m-1");
             //     return false;
             // }
         }
@@ -320,7 +320,7 @@ bool Row::move_focus_right(bool focus_wrap)
                 return true;
             }
             // else{
-            //     g_pKeybindManager->m_mDispatchers["workspace"]("m-1");
+            //     g_pKeybindManager->m_dispatchers["workspace"]("m-1");
             //     return false;
             // }
         }
