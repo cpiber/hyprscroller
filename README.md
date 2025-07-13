@@ -169,7 +169,7 @@ The plugin adds the following dispatchers:
 |-------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
 | `scroller:movefocus`          | An optional replacement for `movefocus`, takes a direction as argument.                                                          |
 | `scroller:movewindow`         | An optional replacement for `movewindow`, takes a direction and a movement mode as arguments.                                    |
-| `scroller:setmode`            | Set mode: `r/row` (default), `c/col/column`. Sets the working mode. Affects most dispatchers and new window creation.            |
+| `scroller:setmode`            | Set mode: `r/row` (default), `c/col/column`, `t/toggle` (to toggle between `row` and `column`). Sets the working mode. Affects most dispatchers and new window creation.            |
 | `scroller:setmodemodifier`    | Assigns modifiers to the current mode for window creation: position, focus/nofocus, manual/auto. Description [below](#modes)     |
 | `scroller:cyclesize`          | Resize the focused column width (*row* mode), or the active window height (*column* mode).                                       |
 | `scroller:cyclewidth`         | Resize the focused column width.                                                                                                 |
