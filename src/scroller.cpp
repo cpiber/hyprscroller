@@ -899,17 +899,23 @@ void ScrollerLayout::move_focus(WORKSPACEID workspace, Direction direction)
                 orig_moveFocusTo("r");
                 break;
             case Direction::Up:
-                if (g_pCompositor->getMonitorInDirection('u') == nullptr) {
-                    g_pKeybindManager->m_dispatchers["workspace"]("m-1");
-                } else {
-                    orig_moveFocusTo("u");
+                {
+                    static auto* const *movefocus_changes_workspace = (Hyprlang::INT* const *)HyprlandAPI::getConfigValue(PHANDLE, "plugin:scroller:movefocus_changes_workspace")->getDataStaticPtr();
+                    if (**movefocus_changes_workspace && g_pCompositor->getMonitorInDirection('u') == nullptr) {
+                        g_pKeybindManager->m_dispatchers["workspace"]("m-1");
+                    } else {
+                        orig_moveFocusTo("u");
+                    }
                 }
                 break;
             case Direction::Down:
-                if (g_pCompositor->getMonitorInDirection('d') == nullptr) {
-                    g_pKeybindManager->m_dispatchers["workspace"]("m+1");
-                } else {
-                    orig_moveFocusTo("d");
+                {
+                    static auto* const *movefocus_changes_workspace = (Hyprlang::INT* const *)HyprlandAPI::getConfigValue(PHANDLE, "plugin:scroller:movefocus_changes_workspace")->getDataStaticPtr();
+                    if (**movefocus_changes_workspace && g_pCompositor->getMonitorInDirection('d') == nullptr) {
+                        g_pKeybindManager->m_dispatchers["workspace"]("m+1");
+                    } else {
+                        orig_moveFocusTo("d");
+                    }
                 }
                 break;
             default:

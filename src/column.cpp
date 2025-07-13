@@ -302,7 +302,10 @@ bool Column::move_focus_up(bool focus_wrap)
                 active = windows.last();
                 return true;
             } else {
-                g_pKeybindManager->m_dispatchers["workspace"]("m-1");
+                static auto* const *movefocus_changes_workspace = (Hyprlang::INT* const *)HyprlandAPI::getConfigValue(PHANDLE, "plugin:scroller:movefocus_changes_workspace")->getDataStaticPtr();
+                if (**movefocus_changes_workspace) {
+                    g_pKeybindManager->m_dispatchers["workspace"]("m-1");
+                }
                 return false;
             }
         }
@@ -324,7 +327,10 @@ bool Column::move_focus_down(bool focus_wrap)
                 active = windows.first();
                 return true;
             } else {
-                g_pKeybindManager->m_dispatchers["workspace"]("m+1");
+                static auto* const *movefocus_changes_workspace = (Hyprlang::INT* const *)HyprlandAPI::getConfigValue(PHANDLE, "plugin:scroller:movefocus_changes_workspace")->getDataStaticPtr();
+                if (**movefocus_changes_workspace) {
+                    g_pKeybindManager->m_dispatchers["workspace"]("m+1");
+                }
                 return false;
             }
         }
