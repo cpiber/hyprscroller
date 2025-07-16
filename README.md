@@ -13,6 +13,25 @@ however, it is not known if the package will be updated with this fork.
 This repository contains a flake, which should build the appropriate version of *hyprscroller*.
 Please refer to [hyprland-plugins](https://github.com/hyprwm/hyprland-plugins/#nix) on how to use it.
 
+Note that in order to make Hyprland's and hyprscroller's versions match, you need to set hyprscroller's `hyprland` input to the one you're pulling your Hyprland package from. This could be done like this:
+
+```nix
+# flake.nix
+
+{
+  inputs = {
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+    };
+
+    hyprscroller = {
+      url = "github:cpiber/hyprscroller";
+      inputs.hyprland.follows = "hyprland";
+    };
+  };
+}
+```
+
 ---
 
 # Hyprscroller
