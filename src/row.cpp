@@ -293,9 +293,10 @@ bool Row::move_focus_left(bool focus_wrap)
     if (active == columns.first()) {
         PHLMONITOR monitor = g_pCompositor->getMonitorInDirection('l');
         if (monitor == nullptr) {
-            if (focus_wrap)
+            if (focus_wrap) {
                 active = columns.last();
-            return true;
+                return true;
+            }
         }
 
         orig_moveFocusTo("l");
@@ -310,9 +311,10 @@ bool Row::move_focus_right(bool focus_wrap)
     if (active == columns.last()) {
         PHLMONITOR monitor = g_pCompositor->getMonitorInDirection('r');
         if (monitor == nullptr) {
-            if (focus_wrap)
+            if (focus_wrap) {
                 active = columns.first();
-            return true;
+                return true;
+            }
         }
 
         orig_moveFocusTo("r");
@@ -428,7 +430,13 @@ void Row::resize_active_window(const Vector2D &delta)
 
 void Row::set_mode(Mode m, bool silent)
 {
-    mode = m;
+    if (m == Mode::Toggle){
+        if (mode == Mode::Row)
+            mode = Mode::Column;
+        else if (mode == Mode::Column)
+            mode = Mode::Row;
+    } else
+        mode = m;
     if (!silent) {
         post_event("mode");
     }

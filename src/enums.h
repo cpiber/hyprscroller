@@ -7,7 +7,7 @@
 enum class Direction { Left, Right, Up, Down, Begin, End, Center, Middle, Invalid };
 enum class AdmitExpelDirection { Left, Right };
 enum class FitSize { Active, Visible, All, ToEnd, ToBeg };
-enum class Mode { Row, Column };
+enum class Mode { Row, Column, Toggle };
 
 class ModeModifier {
 public:
