@@ -7,13 +7,15 @@ Original readme below.
 
 ## Nix
 
-*hyprscroller* is now an official unstable package in [nixpkgs](https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=hyprlandPlugins.hyprscroller),
-however, it is not known if the package will be updated with this fork.
-
 This repository contains a flake, which should build the appropriate version of *hyprscroller*.
 Please refer to [hyprland-plugins](https://github.com/hyprwm/hyprland-plugins/#nix) on how to use it.
 
-Note that in order to make Hyprland's and hyprscroller's versions match, you need to set hyprscroller's `hyprland` input to the one you're pulling your Hyprland package from. This could be done like this:
+> [!IMPORTANT]
+> In order to make Hyprland's and hyprscroller's versions match, you need to set hyprscroller's `hyprland` input to the one you are pulling your Hyprland package from.
+
+Here are some common scenarios of how to make Hyprland and hyprscroller versions match:
+
+- **If you are targeting Hyprland's master branch**
 
 ```nix
 # flake.nix
@@ -27,6 +29,48 @@ Note that in order to make Hyprland's and hyprscroller's versions match, you nee
     hyprscroller = {
       url = "github:cpiber/hyprscroller";
       inputs.hyprland.follows = "hyprland";
+    };
+  };
+}
+```
+
+- **If you are using a release version of Hyprland**
+
+The flake in this repo will automatically match it against the right version of the plugin, based on the `hyprpm.toml` in the repo:
+
+```nix
+# flake.nix
+
+{
+  inputs = {
+    hyprland = {
+      url = "github:hyprwm/Hyprland/v0.49.0";
+    };
+
+    hyprscroller = {
+      url = "github:cpiber/hyprscroller";
+      inputs.hyprland.follows = "hyprland";
+    };
+  };
+}
+```
+
+- **If your version of Hyprland is pinned to a non-release revision**
+
+You will need to manually identify the corresponding `hyprscroller` commit.
+
+- **If you are using Hyprland from Nixpkgs, rather than from Hyprland's flake**
+
+You should inspect `hyprpm.toml` in this repo and find the right *hyprscroller* commit to use as your pin.
+
+```nix
+# flake.nix
+
+{
+  inputs = {
+    hyprscroller = {
+      # for Hyprland v0.49.0
+      url = "github:cpiber/hyprscroller/172542b1a4493f73659e3846b754bc9ebadc907b";
     };
   };
 }
