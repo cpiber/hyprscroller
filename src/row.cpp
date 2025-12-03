@@ -1,5 +1,6 @@
 #include <hyprland/src/config/ConfigValue.hpp>
 #include <hyprland/src/config/ConfigManager.hpp>
+#include <hyprland/src/desktop/state/FocusState.hpp>
 #include <hyprland/src/managers/EventManager.hpp>
 #include <hyprland/src/plugins/PluginAPI.hpp>
 #include <hyprland/src/render/Renderer.hpp>
@@ -24,7 +25,7 @@ Row::Row(WORKSPACEID workspace)
       reorder(Reorder::Auto), pinned(nullptr), active(nullptr)
 {
     post_event("overview");
-    const auto PMONITOR = g_pCompositor->m_lastMonitor.lock();
+    const auto PMONITOR = Desktop::focusState()->monitor();
     set_mode(scroller_sizes.get_mode(PMONITOR));
     update_sizes(PMONITOR);
 }
@@ -361,7 +362,7 @@ void Row::resize_active_column(int step)
             static auto* const *CYCLESIZE_CLOSEST = (Hyprlang::INT* const *)HyprlandAPI::getConfigValue(PHANDLE, "plugin:scroller:cyclesize_closest")->getDataStaticPtr();
             if (**CYCLESIZE_CLOSEST) {
                 double fraction = active->data()->get_geom_w() / max.w;
-                width = scroller_sizes.get_column_closest_width(g_pCompositor->m_lastMonitor, fraction, step);
+                width = scroller_sizes.get_column_closest_width(Desktop::focusState()->monitor(), fraction, step);
             } else {
                 width = scroller_sizes.get_column_default_width(get_active_window());
             }
@@ -1613,5 +1614,5 @@ void Row::scroll_end(Direction dir)
         column->data()->scroll_end(dir, gap);
     }
     recalculate_row_geometry();
-    g_pCompositor->focusWindow(get_active_window());
+    Desktop::focusState()->rawWindowFocus(get_active_window());
 }

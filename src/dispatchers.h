@@ -2,6 +2,7 @@
 #define SCROLLER_DISPATCHERS_H
 
 #include <hyprland/src/SharedDefs.hpp>
+#include <hyprland/src/desktop/state/FocusState.hpp>
 
 #include <string>
 

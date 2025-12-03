@@ -40,7 +40,7 @@ StandardSize ScrollerSizes::get_next(const std::vector<StandardSize> &sizes, Sta
 StandardSize ScrollerSizes::get_next_window_height(StandardSize size, int step)
 {
     update();
-    const std::string &monitor = g_pCompositor->m_lastMonitor->m_name;
+    const std::string &monitor = Desktop::focusState()->monitor()->m_name;
     for (const auto monitor_data : monitors) {
         if (monitor_data.name == monitor)
             return get_next(monitor_data.window_heights, size, step);
@@ -51,7 +51,7 @@ StandardSize ScrollerSizes::get_next_window_height(StandardSize size, int step)
 StandardSize ScrollerSizes::get_next_column_width(StandardSize size, int step)
 {
     update();
-    const std::string &monitor = g_pCompositor->m_lastMonitor->m_name;
+    const std::string &monitor = Desktop::focusState()->monitor()->m_name;
     for (const auto monitor_data : monitors) {
         if (monitor_data.name == monitor)
             return get_next(monitor_data.column_widths, size, step);
@@ -68,7 +68,7 @@ StandardSize ScrollerSizes::get_size(const std::vector<StandardSize> &sizes, int
 StandardSize ScrollerSizes::get_window_height(int index)
 {
     update();
-    const std::string &monitor = g_pCompositor->m_lastMonitor->m_name;
+    const std::string &monitor = Desktop::focusState()->monitor()->m_name;
     for (const auto monitor_data : monitors) {
         if (monitor_data.name == monitor)
             return get_size(monitor_data.window_heights, index);
@@ -79,7 +79,7 @@ StandardSize ScrollerSizes::get_window_height(int index)
 StandardSize ScrollerSizes::get_column_width(int index)
 {
     update();
-    const std::string &monitor = g_pCompositor->m_lastMonitor->m_name;
+    const std::string &monitor = Desktop::focusState()->monitor()->m_name;
     for (const auto monitor_data : monitors) {
         if (monitor_data.name == monitor)
             return get_size(monitor_data.column_widths, index);

@@ -43,10 +43,10 @@ namespace dispatchers {
             return -1;
 
         int workspace_id;
-        if (g_pCompositor->m_lastMonitor->activeSpecialWorkspaceID()) {
-            workspace_id = g_pCompositor->m_lastMonitor->activeSpecialWorkspaceID();
+        if (Desktop::focusState()->monitor()->activeSpecialWorkspaceID()) {
+            workspace_id = Desktop::focusState()->monitor()->activeSpecialWorkspaceID();
         } else {
-            workspace_id = g_pCompositor->m_lastMonitor->activeWorkspaceID();
+            workspace_id = Desktop::focusState()->monitor()->activeWorkspaceID();
         }
         if (workspace_id == WORKSPACE_INVALID)
             return -1;

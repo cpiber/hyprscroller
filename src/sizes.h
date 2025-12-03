@@ -2,6 +2,7 @@
 #define SCROLLER_SIZES_H
 
 #include <hyprland/src/Compositor.hpp>
+#include <hyprland/src/desktop/state/FocusState.hpp>
 
 #include <vector>
 

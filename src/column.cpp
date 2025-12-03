@@ -4,6 +4,7 @@
 
 #include <hyprland/src/config/ConfigManager.hpp>
 #include <hyprland/src/plugins/PluginAPI.hpp>
+#include <hyprland/src/desktop/state/FocusState.hpp>
 
 extern HANDLE PHANDLE;
 extern std::function<SDispatchResult(std::string)> orig_moveFocusTo;
@@ -534,7 +535,7 @@ void Column::cycle_size_active_window(int step, const Vector2D &gap_x, double ga
         static auto* const *CYCLESIZE_CLOSEST = (Hyprlang::INT* const *)HyprlandAPI::getConfigValue(PHANDLE, "plugin:scroller:cyclesize_closest")->getDataStaticPtr();
         if (**CYCLESIZE_CLOSEST) {
             double fraction = active->data()->get_geom_h() / row->get_max().h;
-            height = scroller_sizes.get_window_closest_height(g_pCompositor->m_lastMonitor, fraction, step);
+            height = scroller_sizes.get_window_closest_height(Desktop::focusState()->monitor(), fraction, step);
         } else {
             height = scroller_sizes.get_window_default_height(active->data()->get_window());
         }

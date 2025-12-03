@@ -1,5 +1,6 @@
 #include <hyprland/src/plugins/PluginAPI.hpp>
 #include <hyprland/src/Compositor.hpp>
+#include <hyprland/src/desktop/state/FocusState.hpp>
 #include <hyprland/src/helpers/Monitor.hpp>
 #include <hyprland/src/render/Renderer.hpp>
 
@@ -101,7 +102,7 @@ static CBox hookLogicalBox(CMonitor *thisptr) {
 static void hookRenderSoftwareCursorsFor(void *thisptr, PHLMONITOR monitor, const Time::steady_tp& now, CRegion& damage, std::optional<Vector2D> overridePos, bool forceRender) {
     // Should render the cursor for all the extent of the workspace, and only on
     // overview workspaces when there is one active, and it is in the current monitor.
-    PHLMONITOR last = g_pCompositor->m_lastMonitor.lock();
+    PHLMONITOR last = Desktop::focusState()->monitor();
 
     if (monitor == last) {
         // Render cursor
@@ -119,7 +120,7 @@ static void hookRenderSoftwareCursorsFor(void *thisptr, PHLMONITOR monitor, cons
 // Needed to fake an overview monitor's desktop contains all its windows
 // instead of some of them being in the other monitor.
 static Vector2D hookClosestValid(void *thisptr, const Vector2D& pos) {
-    PHLMONITOR last = g_pCompositor->m_lastMonitor.lock();
+    PHLMONITOR last = Desktop::focusState()->monitor();
     WORKSPACEID workspace = last->activeSpecialWorkspaceID();
     if (!workspace)
         workspace = last->activeWorkspaceID();
@@ -140,7 +141,7 @@ static Vector2D hookClosestValid(void *thisptr, const Vector2D& pos) {
 static PHLMONITOR hookGetMonitorFromVector(void *thisptr, const Vector2D& point) {
     CCompositor *compositor = static_cast<CCompositor *>(thisptr);
     // First, see if the current monitor contains the point
-    PHLMONITOR last = compositor->m_lastMonitor.lock();
+    PHLMONITOR last = Desktop::focusState()->monitor();
     PHLMONITOR mon;
     for (auto const& m : compositor->m_monitors) {
         WORKSPACEID workspace = m->activeSpecialWorkspaceID();
@@ -199,7 +200,7 @@ static void hookRenderMonitor(CHyprRenderer *thisptr, PHLMONITOR monitor, bool c
 
 // Needed to render the HW cursor at the right position
 static Vector2D hookGetCursorPosForMonitor(void *thisptr, PHLMONITOR monitor) {
-    if (g_pCompositor->m_lastMonitor.lock() != monitor)
+    if (Desktop::focusState()->monitor() != monitor)
         return { 0.0, monitor->m_size.y };
 
     WORKSPACEID workspace = monitor->activeSpecialWorkspaceID();

@@ -7,6 +7,7 @@
 #include "list.h"
 #include <hyprland/src/SharedDefs.hpp>
 #include <hyprland/src/devices/IPointer.hpp>
+#include <hyprland/src/desktop/state/FocusState.hpp>
 
 #include "enums.h"
 

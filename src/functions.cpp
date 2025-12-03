@@ -36,10 +36,10 @@ void toggle_window_fullscreen_internal(PHLWINDOW window, eFullscreenMode mode)
 WORKSPACEID get_workspace_id()
 {
     WORKSPACEID workspace_id;
-    if (g_pCompositor->m_lastMonitor->activeSpecialWorkspaceID()) {
-        workspace_id = g_pCompositor->m_lastMonitor->activeSpecialWorkspaceID();
+    if (Desktop::focusState()->monitor()->activeSpecialWorkspaceID()) {
+        workspace_id = Desktop::focusState()->monitor()->activeSpecialWorkspaceID();
     } else {
-        workspace_id = g_pCompositor->m_lastMonitor->activeWorkspaceID();
+        workspace_id = Desktop::focusState()->monitor()->activeWorkspaceID();
     }
     if (workspace_id == WORKSPACE_INVALID)
         return -1;
@@ -58,7 +58,7 @@ void update_relative_cursor_coords(PHLWINDOW window)
 void force_focus_to_window(PHLWINDOW window)
 {
     g_pInputManager->unconstrainMouse();
-    g_pCompositor->focusWindow(window);
+    Desktop::focusState()->rawWindowFocus(window);
     window->warpCursor();
 
     g_pInputManager->m_forcedFocus = window;
@@ -87,7 +87,8 @@ void switch_to_window(PHLWINDOW from, PHLWINDOW to)
         }
         if (change_workspace) {
             // This is to override overview trying to stay in an overview workspace
-            g_pCompositor->m_lastMonitor = to->m_monitor;
+            // g_pCompositor->m_lastMonitor = to->m_monitor;
+            Desktop::focusState()->rawWindowFocus(to);
         }
         force_focus_to_window(to);
         if (mode != eFullscreenMode::FSMODE_NONE) {
