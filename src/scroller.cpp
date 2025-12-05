@@ -410,7 +410,7 @@ void ScrollerLayout::onWindowRemovedFloating(PHLWINDOW window)
     }
     auto s = getRowForWorkspace(workspace_id);
     if (s != nullptr)
-        Desktop::focusState()->rawWindowFocus(s->get_active_window());
+        Desktop::focusState()->fullWindowFocus(s->get_active_window());
 }
 
 /*
@@ -1216,7 +1216,7 @@ void ScrollerLayout::selection_move(WORKSPACEID workspace, Direction direction) 
             bool overview = row->data()->is_overview();
             if (overview)
                 row->data()->toggle_overview();
-            Desktop::focusState()->rawWindowFocus(row->data()->get_active_window());
+            Desktop::focusState()->fullWindowFocus(row->data()->get_active_window());
             row->data()->recalculate_row_geometry();
             if (overview)
                 row->data()->toggle_overview();
@@ -1224,7 +1224,7 @@ void ScrollerLayout::selection_move(WORKSPACEID workspace, Direction direction) 
         row = next;
     }
 
-    Desktop::focusState()->rawWindowFocus(s->get_active_window());
+    Desktop::focusState()->fullWindowFocus(s->get_active_window());
     // Reset selection
     selection_reset();
 

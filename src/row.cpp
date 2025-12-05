@@ -1614,5 +1614,5 @@ void Row::scroll_end(Direction dir)
         column->data()->scroll_end(dir, gap);
     }
     recalculate_row_geometry();
-    Desktop::focusState()->rawWindowFocus(get_active_window());
+    Desktop::focusState()->fullWindowFocus(get_active_window());
 }

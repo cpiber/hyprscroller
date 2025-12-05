@@ -58,7 +58,7 @@ void update_relative_cursor_coords(PHLWINDOW window)
 void force_focus_to_window(PHLWINDOW window)
 {
     g_pInputManager->unconstrainMouse();
-    Desktop::focusState()->rawWindowFocus(window);
+    Desktop::focusState()->fullWindowFocus(window);
     window->warpCursor();
 
     g_pInputManager->m_forcedFocus = window;
@@ -88,7 +88,7 @@ void switch_to_window(PHLWINDOW from, PHLWINDOW to)
         if (change_workspace) {
             // This is to override overview trying to stay in an overview workspace
             // g_pCompositor->m_lastMonitor = to->m_monitor;
-            Desktop::focusState()->rawWindowFocus(to);
+            Desktop::focusState()->fullWindowFocus(to);
         }
         force_focus_to_window(to);
         if (mode != eFullscreenMode::FSMODE_NONE) {
