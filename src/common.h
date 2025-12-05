@@ -5,6 +5,7 @@
 
 using Hyprutils::Math::Vector2D;
 
+// TODO: Get rid of this and use CBox
 struct Box {
     Box() : x(0), y(0), w(0), h(0) {}
     Box(double x_, double y_, double w_, double h_)

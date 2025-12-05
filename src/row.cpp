@@ -998,16 +998,15 @@ bool Row::update_sizes(PHLMONITOR monitor)
     // For now, support only constant CCssGapData
     auto gaps_in = WORKSPACERULE.gapsIn.value_or(*PGAPSIN).m_top;
     auto gaps_out = WORKSPACERULE.gapsOut.value_or(*PGAPSOUT);
-    const auto SIZE = monitor->m_size;
-    const auto POS = monitor->m_position;
-    const auto TOPLEFT = monitor->m_reservedTopLeft;
-    const auto BOTTOMRIGHT = monitor->m_reservedBottomRight;
+    auto box = monitor->logicalBox();
 
-    full = Box(POS, SIZE);
-    const Box newmax = Box(POS.x + TOPLEFT.x + gaps_out.m_left,
-                           POS.y + TOPLEFT.y + gaps_out.m_top,
-                           SIZE.x - TOPLEFT.x - BOTTOMRIGHT.x - gaps_out.m_left - gaps_out.m_right,
-                           SIZE.y - TOPLEFT.y - BOTTOMRIGHT.y - gaps_out.m_top - gaps_out.m_bottom);
+    full = Box(box.pos(), box.size());
+    monitor->m_reservedArea.applyip(box);
+    box.x += gaps_out.m_left;
+    box.y += gaps_out.m_top;
+    box.w -= gaps_out.m_left + gaps_out.m_right;
+    box.h -= gaps_out.m_top + gaps_out.m_bottom;
+    const Box newmax = Box(box.pos(), box.size());
     bool changed = gap != gaps_in;
     gap = gaps_in;
 
