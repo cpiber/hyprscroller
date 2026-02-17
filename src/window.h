@@ -10,7 +10,9 @@ class Window {
 public:
     Window(PHLWINDOW window, double maxy, double box_h, StandardSize width);
     ~Window() {
-        window->removeWindowDeco(decoration);
+        if (const auto w = window.lock()) {
+            w->removeWindowDeco(decoration);
+        }
     }
     PHLWINDOW get_window() { return window.lock(); }
     double get_geom_h() const { return box_h; }
