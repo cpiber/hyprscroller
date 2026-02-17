@@ -142,9 +142,12 @@ void Column::add_active_window_from_top(PHLWINDOW window)
 void Column::remove_window(PHLWINDOW window)
 {
     reorder = Reorder::Auto;
+    if (!active) {
+        active = windows.first();
+    }
     for (auto win = windows.first(); win != nullptr; win = win->next()) {
         if (win->data()->is_window(window)) {
-            if (active->data()->is_window(window)) {
+            if (active != nullptr && active->data()->is_window(window)) {
                 // Make next window active (like PaperWM)
                 // If it is the last, make the previous one active.
                 // If it is the only window. active will point to nullptr,
@@ -769,4 +772,3 @@ void Column::move_to_workspace(PHLWORKSPACE workspace)
         w->data()->move_to_workspace(workspace);
     }
 }
-
