@@ -1,3 +1,9 @@
+> [!WARNING]
+> Hyprland now has native support for scrolling (see [Hyprland#12890](https://github.com/hyprwm/Hyprland/pull/12890)).  
+> Since this also fundamentally changes how layouts are handled, *hyprscrolling* will not be compatible anymore.
+>
+> Please see [the pinned issue](https://github.com/cpiber/hyprscroller/issues/35) for a discussion on a way forward.
+
 # Hyprscroller (fork)
 
 The original author has stopped maintaining this plugin.
